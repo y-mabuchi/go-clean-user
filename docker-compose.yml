@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  app:
+    image: go-clean
+    container_name: go-clean
+    build:
+      context: ./deployments/docker/dev
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    links:
+      - db
+  db:
+    image: mysql:8.0
+    volumes:
+      - go-clean-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: go-clean
+      MYSQL_USER: go-clean
+      MYSQL_PASSWORD: go-clean
+      MYSQL_ROOT_PASSWORD: go-clean
+      TZ: Asia/Tokyo
+    ports:
+      - "3306:3306"
+
+volumes:
+    go-clean-data:
